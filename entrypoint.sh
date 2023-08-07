@@ -18,7 +18,7 @@ TARGET_DIRECTORY="${11}"
 CREATE_TARGET_BRANCH_IF_NEEDED="${12}"
 
 
- chmod 755 * -R
+ chmod 755 .git/ -R
 
 if [ -z "$DESTINATION_REPOSITORY_USERNAME" ]
 then
