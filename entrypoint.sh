@@ -108,13 +108,17 @@ ls -la "$CLONE_DIR"
 
 git remote add target  "$GIT_CMD_REPOSITORY"
 
+git remote -v
+
+git switch -c "$TARGET_BRANCH" || true
+
 git push  target --set-upstream "$TARGET_BRANCH" --force --no-thin
 
 
 echo "[+] Resetting the git"
 
 
-git remote -v
+
 
 
 
