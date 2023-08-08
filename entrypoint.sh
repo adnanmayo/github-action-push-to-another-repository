@@ -100,6 +100,7 @@ git config --global http.version HTTP/1.1
 }
 ls -la "$CLONE_DIR"
 
+echo "[+] Resetting the git"
 
 git reset --hard origin/"$TARGET_BRANCH"
 
