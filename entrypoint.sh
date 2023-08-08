@@ -100,6 +100,10 @@ git config --global http.version HTTP/1.1
 }
 ls -la "$CLONE_DIR"
 
+
+git reset --hard origin/"$TARGET_BRANCH"
+
+
 TEMP_DIR=$(mktemp -d)
 # This mv has been the easier way to be able to remove files that were there
 # but not anymore. Otherwise we had to remove the files from "$CLONE_DIR",
