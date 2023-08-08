@@ -17,8 +17,6 @@ COMMIT_MESSAGE="${10}"
 TARGET_DIRECTORY="${11}"
 CREATE_TARGET_BRANCH_IF_NEEDED="${12}"
 
- chmod 755 .git/ -R
-
 if [ -z "$DESTINATION_REPOSITORY_USERNAME" ]
 then
 	DESTINATION_REPOSITORY_USERNAME="$DESTINATION_GITHUB_USERNAME"
@@ -72,26 +70,17 @@ echo "[+] Cloning destination git repository $DESTINATION_REPOSITORY_NAME"
 git config --global user.email "$USER_EMAIL"
 git config --global user.name "$USER_NAME"
 
-
-
-git config --global --add safe.directory '*'
-
-
 # workaround for https://github.com/cpina/github-action-push-to-another-repository/issues/103
 git config --global http.version HTTP/1.1
 
-
-
-
-
 {
-	git clone --single-branch --branch "$TARGET_BRANCH" "$GIT_CMD_REPOSITORY" "$CLONE_DIR"
+	git clone --single-branch --depth 1 --branch "$TARGET_BRANCH" "$GIT_CMD_REPOSITORY" "$CLONE_DIR"
 } || {
     if [ "$CREATE_TARGET_BRANCH_IF_NEEDED" = "true" ]
     then
         # Default branch of the repository is cloned. Later on the required branch
 	# will be created
-        git clone --single-branch "$GIT_CMD_REPOSITORY" "$CLONE_DIR"
+        git clone --single-branch --depth 1 "$GIT_CMD_REPOSITORY" "$CLONE_DIR"
     else
         false
     fi
@@ -105,28 +94,11 @@ git config --global http.version HTTP/1.1
 }
 ls -la "$CLONE_DIR"
 
-
-git remote add target  "$GIT_CMD_REPOSITORY"
-
-git remote -v
-
-git switch -c "$TARGET_BRANCH" || true
-
-git push  target --set-upstream "$TARGET_BRANCH" --force --no-thin
-
-
-echo "[+] Resetting the git"
-
-
-
-
-
-
 TEMP_DIR=$(mktemp -d)
 # This mv has been the easier way to be able to remove files that were there
 # but not anymore. Otherwise we had to remove the files from "$CLONE_DIR",
 # including "." and with the exception of ".git/"
-#mv "$CLONE_DIR/.git" "$TEMP_DIR/.git"
+mv "$CLONE_DIR/.git" "$TEMP_DIR/.git"
 
 # $TARGET_DIRECTORY is '' by default
 ABSOLUTE_TARGET_DIRECTORY="$CLONE_DIR/$TARGET_DIRECTORY/"
@@ -143,7 +115,7 @@ ls -al
 echo "[+] Listing root Location"
 ls -al /
 
-#mv "$TEMP_DIR/.git" "$CLONE_DIR/.git"
+mv "$TEMP_DIR/.git" "$CLONE_DIR/.git"
 
 echo "[+] List contents of $SOURCE_DIRECTORY"
 ls "$SOURCE_DIRECTORY"
@@ -196,17 +168,8 @@ git status
 
 echo "[+] git diff-index:"
 # git diff-index : to avoid doing the git commit failing if there are no changes to be commit
-#git diff-index --quiet HEAD || git commit --message "$COMMIT_MESSAGE"
+git diff-index --quiet HEAD || git commit --message "$COMMIT_MESSAGE"
 
 echo "[+] Pushing git commit"
-
-git fsck --full
-echo "we are here for testing purpose"
-
-
-
-
-
-
 # --set-upstream: sets de branch when pushing to a branch that does not exist
-git push  "$GIT_CMD_REPOSITORY" --set-upstream "$TARGET_BRANCH" --force --no-thin
+git push "$GIT_CMD_REPOSITORY" --set-upstream "$TARGET_BRANCH"
