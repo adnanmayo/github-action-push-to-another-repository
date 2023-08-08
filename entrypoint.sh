@@ -107,7 +107,6 @@ ls -la "$CLONE_DIR"
 
 echo "[+] Resetting the git"
 
-git pull --rebase "$TARGET_BRANCH"
 
 
 TEMP_DIR=$(mktemp -d)
