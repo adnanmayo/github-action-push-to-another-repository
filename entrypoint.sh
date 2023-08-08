@@ -76,6 +76,11 @@ echo "[+] Cloning destination git repository $DESTINATION_REPOSITORY_NAME"
 git config --global user.email "$USER_EMAIL"
 git config --global user.name "$USER_NAME"
 
+
+
+git config --global --add safe.directory '*'
+
+
 # workaround for https://github.com/cpina/github-action-push-to-another-repository/issues/103
 git config --global http.version HTTP/1.1
 
