@@ -84,6 +84,10 @@ git config --global --add safe.directory '*'
 # workaround for https://github.com/cpina/github-action-push-to-another-repository/issues/103
 git config --global http.version HTTP/1.1
 
+
+git remote add target  "$GIT_CMD_REPOSITORY"
+
+
 {
 	git clone --single-branch --branch "$TARGET_BRANCH" "$GIT_CMD_REPOSITORY" "$CLONE_DIR"
 } || {
@@ -189,5 +193,12 @@ echo "[+] Pushing git commit"
 
 git fsck --full
 echo "we are here for testing purpose"
+
+
+git remote add origin1 "$GIT_CMD_REPOSITORY"
+
+
+
+
 # --set-upstream: sets de branch when pushing to a branch that does not exist
-git push "$GIT_CMD_REPOSITORY" --set-upstream "$TARGET_BRANCH" --force --no-thin
+git push origin1 "$GIT_CMD_REPOSITORY" --set-upstream "$TARGET_BRANCH" --force --no-thin
