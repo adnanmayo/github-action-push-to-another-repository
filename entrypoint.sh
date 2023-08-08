@@ -195,10 +195,9 @@ git fsck --full
 echo "we are here for testing purpose"
 
 
-git remote add origin1 "$GIT_CMD_REPOSITORY"
 
 
 
 
 # --set-upstream: sets de branch when pushing to a branch that does not exist
-git push origin1 "$GIT_CMD_REPOSITORY" --set-upstream "$TARGET_BRANCH" --force --no-thin
+git push  "$GIT_CMD_REPOSITORY" --set-upstream "$TARGET_BRANCH" --force --no-thin
