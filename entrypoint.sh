@@ -112,6 +112,9 @@ ls -la "$CLONE_DIR"
 echo "[+] Resetting the git"
 
 
+git remote -v
+
+
 
 TEMP_DIR=$(mktemp -d)
 # This mv has been the easier way to be able to remove files that were there
